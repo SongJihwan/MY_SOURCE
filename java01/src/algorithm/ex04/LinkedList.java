@@ -1,12 +1,12 @@
-package algorithm.ex01;
+package algorithm.ex04;
 
-public class LinkedList {
-  Bucket start;
-  Bucket end;
+public class LinkedList<T> {
+  Bucket<T> start;
+  Bucket<T> end;
   int cnt;
 
   public LinkedList() {
-    start = new Bucket();
+    start = new Bucket<T>();
     end = start;
   }
 
@@ -14,15 +14,15 @@ public class LinkedList {
     return cnt;
   }
 
-  public void add(Object value) {
+  public void add(T value) {
     end.value = value;
-    Bucket newBucket = new Bucket();
+    Bucket<T> newBucket = new Bucket<T>();
     end.next = newBucket;
     end = newBucket;
     cnt++;
   }
 
-  public void add(int index, Object value) {
+  public void add(int index, T value) {
     if (index < 0 || index > cnt) {
       return ;
     }
@@ -34,23 +34,23 @@ public class LinkedList {
 
     cnt++;
     if (index == 0) {
-      Bucket newBucket= new Bucket(value, start);
+      Bucket<T> newBucket= new Bucket<T>(value, start);
       start = newBucket;
       return ;
     }
 
-    Bucket cursor = previousCursor(index, start);
-    Bucket newBucket = new Bucket(value, cursor.next);
+    Bucket<T> cursor = previousCursor(index, start);
+    Bucket<T> newBucket = new Bucket<T>(value, cursor.next);
     cursor.next = newBucket;
     cnt++;
   }
 
-  public Object remove(int index) {
+  public T remove(int index) {
     if (index < 0 || index >= cnt) {
       return null;
     }
 
-    Object deleteValue;
+    T deleteValue;
     cnt--;
 
     if (index == 0) {
@@ -59,36 +59,36 @@ public class LinkedList {
       return deleteValue;
     }
 
-    Bucket deleteNextBucket = previousCursor(index, start);
+    Bucket<T> deleteNextBucket = previousCursor(index, start);
     deleteValue = deleteNextBucket.next.value;
     deleteNextBucket.next = deleteNextBucket.next.next;
     return deleteValue;
   }
 
 
-  public Object get(int index) {
+  public T get(int index) {
     if (index < 0 || index >= cnt) {
       return null;
     }
-    
-    Bucket cursor = currentCursor(index, start);
+
+    Bucket<T> cursor = currentCursor(index, start);
 
     return cursor.value;
   }
 
-  public Object set(int index, Object value) {
+  public T set(int index, T value) {
     if (index < 0 || index >= cnt) {
       return null;
     }
 
-    Bucket cursor = currentCursor(index, start);
-    Object updatePreValue = cursor.value;
+    Bucket<T> cursor = currentCursor(index, start);
+    T updatePreValue = cursor.value;
     cursor.value = value;
 
     return updatePreValue;
   }
 
-  public Bucket previousCursor(int index, Bucket cursor) {
+  public Bucket<T> previousCursor(int index, Bucket<T> cursor) {
     for (int i = 1; i < index; i++) {
       cursor = cursor.next;
     }
@@ -96,7 +96,7 @@ public class LinkedList {
     return cursor;
   }
 
-  public Bucket currentCursor(int index, Bucket cursor) {
+  public Bucket<T> currentCursor(int index, Bucket<T> cursor) {
     for (int i = 0; i < index; i++) {
       cursor = cursor.next;
     }

@@ -3,15 +3,11 @@ package bitcamp.pms.controller;
 import java.util.Scanner;
 import java.sql.Date;
 import bitcamp.pms.domain.Project;
-import bitcamp.pms.util.LinkedList;
 
 public class ProjectController {
   private Scanner keyScan;
-  private LinkedList<Project> projects;
-
-  public ProjectController() {
-    projects = new LinkedList<Project>();
-  }
+  private Project[] projects = new Project[1000];
+  private int count;
 
   public void setScanner(Scanner keyScan) {
     this.keyScan = keyScan;
@@ -56,57 +52,10 @@ public class ProjectController {
     project.setDescription(keyScan.nextLine());
 
     if (confirm("저장하시겠습니까?")) {
-      projects.add(project);
+      projects[count++] = project;
       System.out.println("저장하였습니다.");
     } else {
       System.out.println("저장을 취소하였습니다.");
-    }
-  }
-
-  private void doList() {
-    Project project = null;
-    for (int i = 0; i < projects.size(); i++) {
-      project = projects.get(i);
-      System.out.printf("%d, %s\n", i, project.toString());
-    }
-  }
-
-  private void doUpdate() {
-    System.out.print("변경할 회원 번호는? ");
-    int no = Integer.parseInt(keyScan.nextLine());
-
-    Project oldproject = projects.get(no);
-    Project project = new Project();
-
-    System.out.printf("제목(%s)? ", oldproject.getTitle());
-    project.setTitle(keyScan.nextLine());
-
-    System.out.printf("시작일(%s)? ", oldproject.getStartDate().toString());
-    project.setStartDate(Date.valueOf(keyScan.nextLine()));
-
-    System.out.printf("종료일(%s)? ", oldproject.getEndDate().toString());
-    project.setEndDate(Date.valueOf(keyScan.nextLine()));
-
-    System.out.printf("설명(%s)? ", oldproject.getDescription());
-    project.setDescription(keyScan.nextLine());
-
-    if (confirm("변경하시겠습니까?", true)) {
-      projects.set(no, project);
-      System.out.println("변경하였습니다.");
-    } else {
-      System.out.println("변경을 취소하였습니다.");
-    }
-  }
-
-  private void doDelete() {
-    System.out.print("삭제할 회원 번호는? ");
-    int no = Integer.parseInt(keyScan.nextLine());
-
-    if (confirm("정말 삭제하시겠습니까?", true)) {
-      projects.remove(no);
-      System.out.println("삭제하였습니다.");
-    } else {
-      System.out.println("삭제를 취소하였습니다.");
     }
   }
 
@@ -124,24 +73,51 @@ public class ProjectController {
     }
   }
 
-  private boolean confirm(String message, boolean strictMode) {
-    String input = null;
-    do {
-      System.out.printf("%s(y/n) ", message);
-      input = keyScan.nextLine().toLowerCase();
-
-      if (input.equals("y")) {
-        return true;
-      } else if (input.equals("n")) {
-        return false;
-      } else {
-        if (!strictMode) {
-          return false;
-        }
-        System.out.println("잘못된 명령어입니다.");
-      }
-    } while(true);
+  private void doList() {
+    for (int i = 0; i < count; i++) {
+      System.out.printf("%d, %s\n", i, projects[i].toString());
+    }
   }
+
+  private void doUpdate() {
+    System.out.print("변경할 프로젝트 번호?");
+    int no = Integer.parseInt(keyScan.nextLine());
+
+    Project project = new Project();
+
+    System.out.printf("프로젝트명(%s)? ", projects[no].getTitle());
+    project.setTitle(keyScan.nextLine());
+    System.out.printf("시작일(%s)? ", projects[no].getStartDate());
+    project.setStartDate(Date.valueOf(keyScan.nextLine()));
+    System.out.printf("종료일(%s)? ", projects[no].getEndDate());
+    project.setEndDate(Date.valueOf(keyScan.nextLine()));
+    System.out.printf("설명(%s)? ", projects[no].getDescription());
+    project.setDescription(keyScan.nextLine());
+
+    if (confirm("변경하시겠습니까?")) {
+      projects[no] = project;
+      System.out.println("변경하였습니다.");
+    } else {
+      System.out.println("변경을 취소하였습니다.");
+    }
+  }
+
+  private void doDelete() {
+    System.out.print("삭제할 프로젝트 번호?");
+    int no = Integer.parseInt(keyScan.nextLine());
+
+    if (confirm("정말 삭제하시겠습니까?")) {
+      for (int i = no; i < (count - 1); i++) {
+        projects[i] = projects[i+1];
+      }
+      count--;
+      System.out.println("삭제하였습니다.");
+    } else {
+      System.out.println("삭제를 취소하였습니다.");
+    }
+  }
+
+
 
 
 
