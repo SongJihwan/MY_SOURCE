@@ -51,6 +51,7 @@ public class ProjectApp {
     projectController.setScanner(keyScan);
 
     String input;
+
     do {
       input = prompt();
       processCommand(input);
@@ -59,7 +60,7 @@ public class ProjectApp {
     keyScan.close(); // 항상 다 쓴 자원은 해제해야 한다.
   }
 
-  static void processCommand(String input) {
+  static void processCommand(String input)  {
     String[] cmds = input.split(" ");
 
     if (cmds[0].equals("quit")) {

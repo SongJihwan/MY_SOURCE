@@ -2,6 +2,7 @@ package bitcamp.pms.controller;
 
 import java.util.Scanner;
 import java.sql.Date;
+import bitcamp.pms.exception.OutOfIndexException;
 import bitcamp.pms.domain.Project;
 import bitcamp.pms.util.LinkedList;
 
@@ -21,20 +22,21 @@ public class ProjectController {
     String input = null;
     while (true) {
       input = prompt();
-      if (input.equals("main")) {
-        break;
-      } else if (input.equals("add")) {
-        doAdd();
-      } else if (input.equals("list")) {
-        doList();
-      } else if (input.equals("update")) {
-        doUpdate();
-      } else if (input.equals("delete")) {
-        doDelete();
-      } else {
-        System.out.println("지원하지 않는 명령어입니다.");
+      try {
+        switch (input) {
+          case "add": doAdd(); break;
+          case "list": doList(); break;
+          case "update": doUpdate(); break;
+          case "delete": doDelete(); break;
+          case "main": break;
+          default:
+            System.out.println("지원하지 않는 명령어입니다.");
+        }
+      } catch (OutOfIndexException e) {
+        System.out.println("유효하지 않은 인덱스입니다.");
+      } catch (Exception e) {
+        System.out.println("형식을 확인해주세요.");
       }
-
     }
   }
 
@@ -55,7 +57,7 @@ public class ProjectController {
     System.out.print("설명? ");
     project.setDescription(keyScan.nextLine());
 
-    if (confirm("저장하시겠습니까?")) {
+    if (confirm("저장하시겠습니까?"), true) {
       projects.add(project);
       System.out.println("저장하였습니다.");
     } else {
@@ -107,20 +109,6 @@ public class ProjectController {
       System.out.println("삭제하였습니다.");
     } else {
       System.out.println("삭제를 취소하였습니다.");
-    }
-  }
-
-  private boolean confirm(String message) {
-    while (true) {
-      System.out.printf("%s(y/n) ", message);
-      String input = keyScan.nextLine().toLowerCase();
-      if (input.equals("y")) {
-        return true;
-      } else if (input.equals("n")) {
-        return false;
-      } else {
-        System.out.println("잘못된 명령어입니다.");
-      }
     }
   }
 

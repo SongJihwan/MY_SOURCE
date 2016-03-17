@@ -1,12 +1,12 @@
-package bitcamp.pms.util;
+package algorithm.ex01;
 
-public class LinkedList<T> {
-  Bucket<T> start;
-  Bucket<T> end;
+public class LinkedList {
+  Bucket start;
+  Bucket end;
   int cnt;
 
   public LinkedList() {
-    start = new Bucket<T>();
+    start = new Bucket();
     end = start;
   }
 
@@ -14,14 +14,15 @@ public class LinkedList<T> {
     return cnt;
   }
 
-  public void add(T value) {
+  public void add(Object value) {
     end.value = value;
-    end.next = new Bucket<T>();
-    end = end.next;
+    Bucket newBucket = new Bucket();
+    end.next = newBucket;
+    end = newBucket;
     cnt++;
   }
 
-  public void add(int index, T value) {
+  public void add(int index, Object value) {
     if (index < 0 || index > cnt) {
       return ;
     }
@@ -33,23 +34,23 @@ public class LinkedList<T> {
 
     cnt++;
     if (index == 0) {
-      Bucket<T> newBucket= new Bucket<T>(value, start);
+      Bucket newBucket= new Bucket(value, start);
       start = newBucket;
       return ;
     }
 
-    Bucket<T> cursor = previousCursor(index, start);
-    Bucket<T> newBucket = new Bucket<T>(value, cursor.next);
+    Bucket cursor = previousCursor(index, start);
+    Bucket newBucket = new Bucket(value, cursor.next);
     cursor.next = newBucket;
-    
+    cnt++;
   }
 
-  public T remove(int index) {
+  public Object remove(int index) {
     if (index < 0 || index >= cnt) {
       return null;
     }
 
-    T deleteValue;
+    Object deleteValue;
     cnt--;
 
     if (index == 0) {
@@ -58,36 +59,36 @@ public class LinkedList<T> {
       return deleteValue;
     }
 
-    Bucket<T> deleteNextBucket = previousCursor(index, start);
+    Bucket deleteNextBucket = previousCursor(index, start);
     deleteValue = deleteNextBucket.next.value;
     deleteNextBucket.next = deleteNextBucket.next.next;
     return deleteValue;
   }
 
 
-  public T get(int index) {
+  public Object get(int index) {
     if (index < 0 || index >= cnt) {
       return null;
     }
-
-    Bucket<T> cursor = currentCursor(index, start);
+    
+    Bucket cursor = currentCursor(index, start);
 
     return cursor.value;
   }
 
-  public T set(int index, T value) {
+  public Object set(int index, Object value) {
     if (index < 0 || index >= cnt) {
       return null;
     }
 
-    Bucket<T> cursor = currentCursor(index, start);
-    T updatePreValue = cursor.value;
+    Bucket cursor = currentCursor(index, start);
+    Object updatePreValue = cursor.value;
     cursor.value = value;
 
     return updatePreValue;
   }
 
-  public Bucket<T> previousCursor(int index, Bucket<T> cursor) {
+  public Bucket previousCursor(int index, Bucket cursor) {
     for (int i = 1; i < index; i++) {
       cursor = cursor.next;
     }
@@ -95,7 +96,7 @@ public class LinkedList<T> {
     return cursor;
   }
 
-  public Bucket<T> currentCursor(int index, Bucket<T> cursor) {
+  public Bucket currentCursor(int index, Bucket cursor) {
     for (int i = 0; i < index; i++) {
       cursor = cursor.next;
     }
