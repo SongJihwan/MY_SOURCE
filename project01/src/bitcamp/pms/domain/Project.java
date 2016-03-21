@@ -13,10 +13,11 @@ public class Project {
 
   }
 
-  public Project(String title, Date startDate, Date endDate) {
+  public Project(String title, Date startDate, Date endDate, String description) {
     this.title = title;
     this.startDate = startDate;
     this.endDate = endDate;
+    this.description = description;
   }
 
   @Override
