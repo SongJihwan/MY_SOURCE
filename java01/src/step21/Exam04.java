@@ -1,3 +1,4 @@
+// 주제: Collection API - ArrayList4
 package step21;
 
 import java.util.ArrayList;
@@ -13,12 +14,11 @@ public class Exam04 {
   }
 
   static void printList(ArrayList<String> list) {
-    System.out.println("----------------------");
-    for (String e : list) {
-      System.out.println(e);
+    System.out.println("-----------------------");
+    for (String element : list) {
+      System.out.println(element);
     }
   }
-
   public static void main(String[] args) {
     ArrayList<String> list = new ArrayList<>();
     list.add("111");
@@ -30,10 +30,16 @@ public class Exam04 {
     list.add("aab");
     list.add("Aac");
 
+    // 정렬 전
     printList(list);
 
-    list.sort(new MyComparator());
+    // 정렬
+    MyComparator comp = new MyComparator();
+    list.sort(comp);
 
+    // 정렬 후
     printList(list);
+
   }
+
 }

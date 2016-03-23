@@ -1,17 +1,21 @@
+// member inner class 선언
 package step20.exam03;
 
 public class Outer3 {
-  static int no;
+  int no;
 
-  void m(){
-    System.out.println("m()");
+  void m() {
+    System.out.println("Outer2.m()");
   }
+
   class Inner {
-    // public static void m() {
-    //   System.out.println("m()");
-    // }
+    /* member inner class는 static 메서드를 선언할 수 없다.
+    public static void m() {
+      System.out.println("Inner.m()");
+    }
+    */
     public void m2() {
-      System.out.println("m2()");
+      System.out.println("Inner.m2()");
     }
   }
 }

@@ -1,15 +1,20 @@
+// local inner class 선언
 package step20.exam03;
 
 public class Outer4 {
-  static int no;
+  int no;
 
-  void m(){
+  void m() {
+    // 로컬 중첩 클래스
+    // => m() 메서드 안에서만 사용할 수 있다.
     class Inner {
-      // public static void m() {
-      //   System.out.println("m()");
-      // }
+      /* local inner class도 static 메서드를 선언할 수 없다.
+      public static void m() {
+        System.out.println("Inner.m()");
+      }
+      */
       public void m2() {
-        System.out.println("m2()");
+        System.out.println("Inner.m2()");
       }
     }
 

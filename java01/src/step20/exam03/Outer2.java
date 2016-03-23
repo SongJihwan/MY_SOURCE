@@ -1,16 +1,19 @@
+// top level inner class 선언
 package step20.exam03;
 
 public class Outer2 {
   static int no;
-  public static void m(){
-    System.out.println("m()");
+
+  static void m() {
+    System.out.println("Outer2.m()");
   }
+
   static class Inner {
     public static void m() {
-      System.out.println("m()");
+      System.out.println("Inner.m()");
     }
     public void m2() {
-      System.out.println("m2()");
+      System.out.println("Inner.m2()");
     }
   }
 }

@@ -1,3 +1,4 @@
+// 주제: HashMap - entry set으로 데이터 꺼내기
 package step21;
 
 import java.util.HashMap;
@@ -16,12 +17,12 @@ public class Exam15 {
 
     @Override
     public String toString() {
-      return name + ", " + age;
+      return name + "," + age;
     }
 
     @Override
     public int hashCode() {
-      return toString().hashCode();
+      return this.toString().hashCode();
     }
 
     @Override
@@ -29,37 +30,40 @@ public class Exam15 {
       if (other == null || other.getClass() != this.getClass()) {
         return false;
       }
-
       Member m = (Member)other;
-
-      if(!this.name.equals(name)) {
-        return false;
-      }
-
-      if(this.age != age) {
-        return false;
-      }
-
-       return true;
+      if (!this.name.equals(m.name)) return false;
+      if (this.age != m.age) return false;
+      return true;
     }
-
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
     Member m1 = new Member("홍길동", 20);
     Member m2 = new Member("임꺽정", 30);
     Member m3 = new Member("유관순", 16);
 
-    HashMap<String, Member> map = new HashMap<>();
+   HashMap<String,Member> map = new HashMap<>();
     map.put("aaa", m1);
     map.put("bbb", m2);
     map.put("ccc", m3);
 
-    Set entrySet = map.entrySet();
-    Map.Entry<String, Member> entry = null;
+    Set entrySet = map.entrySet(); // 리턴 값: [키-값]의 목록
+
+    Map.Entry<String,Member> entry = null;
     for (Object item : entrySet) {
-      entry = (Map.Entry<String, Member>)item;
-      System.out.println(entry.getKey() + " = " + entry.getValue());
+      // 제네릭을 사용하지 않는다면 다음과 같이 매번 형변환을 해서 
+      // 사용해야 한다.
+      entry = (Map.Entry<String,Member>) item;
+      System.out.printf("%s-%s\n", entry.getKey(), entry.getValue());
     }
+
   }
+
+
+
+
+
+
+
+
 }

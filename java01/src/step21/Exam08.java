@@ -1,17 +1,18 @@
+// 주제: Collection API - Queue
 package step21;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Exam08 {
-  static void printConcurrentLinkedQueue(ConcurrentLinkedQueue<String> list) {
-    System.out.println("----------------------");
+  static void printList(ConcurrentLinkedQueue<String> list) {
+    System.out.println("-----------------------");
     String value = null;
-    while((value = list.peek()) != null){
-      System.out.println(list.poll());
+    while ((value = list.poll()) != null) {
+      System.out.println(value);
     }
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
     ConcurrentLinkedQueue<String> list = new ConcurrentLinkedQueue<>();
     list.add("111");
     list.add("aaa");
@@ -22,6 +23,8 @@ public class Exam08 {
     list.add("aab");
     list.add("Aac");
 
-    printConcurrentLinkedQueue(list);
+    printList(list);
+
   }
+
 }
