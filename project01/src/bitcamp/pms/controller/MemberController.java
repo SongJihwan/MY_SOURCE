@@ -31,11 +31,19 @@ public class MemberController {
   private ArrayList<Member> members;
 
   public MemberController() {
-    members = new ArrayList<Member>();
+
   }
 
   public void setScanner(Scanner keyScan) {
     this.keyScan = keyScan;
+  }
+
+  public void setArrayList(ArrayList<Member> members) {
+    this.members = members;
+  }
+
+  public ArrayList<Member> getArrayList() {
+    return members;
   }
 
   public void service() {

@@ -40,15 +40,31 @@ package bitcamp.pms;
 import java.util.Scanner;
 import bitcamp.pms.controller.MemberController;
 import bitcamp.pms.controller.ProjectController;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.io.FileReader;
+import java.util.ArrayList;
+import bitcamp.pms.domain.Member;
+import bitcamp.pms.domain.Project;
+import java.io.IOException;
+import java.sql.Date;
 
 public class ProjectApp {
   static Scanner keyScan = new Scanner(System.in);
   static MemberController memberController = new MemberController();
   static ProjectController projectController = new ProjectController();
+  static ArrayList<Member> memberList = new ArrayList<>();
+  static ArrayList<Project> projectList = new ArrayList<>();
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
     memberController.setScanner(keyScan); // <-- 의존 객체 주입
     projectController.setScanner(keyScan);
+    memberController.setArrayList(memberList);
+    projectController.setArrayList(projectList);
+
+    load();
 
     String input;
 
@@ -60,7 +76,7 @@ public class ProjectApp {
     keyScan.close(); // 항상 다 쓴 자원은 해제해야 한다.
   }
 
-  static void processCommand(String input)  {
+  static void processCommand(String input) throws IOException  {
     String[] cmds = input.split(" ");
 
     if (cmds[0].equals("quit")) {
@@ -79,8 +95,50 @@ public class ProjectApp {
     return keyScan.nextLine().toLowerCase();
   }
 
-  static void doQuit() {
+  static void doQuit() throws IOException {
+    save();
     System.out.println("안녕히 가세요!");
+  }
+
+  static void save() throws IOException {
+    memberList = memberController.getArrayList();
+    projectList = projectController.getArrayList();
+    PrintWriter fw_mem = new PrintWriter(new BufferedWriter(new FileWriter("MemberInfo.csv")));
+    for (Member mem : memberList) {
+      fw_mem.println(mem.toString());
+    }
+    fw_mem.close();
+
+    PrintWriter fw_pro = new PrintWriter(new BufferedWriter(new FileWriter("ProjectInfo.csv")));
+    for (Project pro : projectList) {
+      fw_pro.println(pro.toString());
+    }
+    fw_pro.close();
+  }
+
+  static void load() {
+    try {
+      BufferedReader fr_mem = new BufferedReader(new FileReader("MemberInfo.csv"));
+      BufferedReader fr_pro = new BufferedReader(new FileReader("ProjectInfo.csv"));
+      String b;
+      String[] arr;
+      while ((b = fr_mem.readLine()) != null) {
+        arr = b.split(", ");
+        memberList.add(new Member(arr[0], arr[1], arr[2], arr[3]));
+      }
+      fr_mem.close();
+      Project tempProject;
+      while ((b = fr_pro.readLine()) != null) {
+        arr = b.split(",");
+        tempProject = new Project(arr[0], Date.valueOf(arr[1]), Date.valueOf(arr[2]));
+        tempProject.setState(Integer.parseInt(arr[3]));
+        tempProject.setDescription(arr[4]);
+        projectList.add(tempProject);
+      }
+      fr_pro.close();
+    } catch (Exception e) {
+      System.out.println("데이터파일이 없습니다.");
+    }
   }
 
   static void doError() {

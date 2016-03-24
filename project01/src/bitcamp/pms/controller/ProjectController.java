@@ -10,11 +10,19 @@ public class ProjectController {
   private ArrayList<Project> projects;
 
   public ProjectController() {
-    projects = new ArrayList<Project>();
+
   }
 
   public void setScanner(Scanner keyScan) {
     this.keyScan = keyScan;
+  }
+
+  public void setArrayList(ArrayList<Project> projects) {
+    this.projects = projects;
+  }
+
+  public ArrayList<Project> getArrayList() {
+    return projects;
   }
 
   public void service() {
@@ -27,7 +35,7 @@ public class ProjectController {
           case "list": doList(); break;
           case "update": doUpdate(); break;
           case "delete": doDelete(); break;
-          case "main": break;
+          case "main": return;
           default:
             System.out.println("지원하지 않는 명령어입니다.");
         }

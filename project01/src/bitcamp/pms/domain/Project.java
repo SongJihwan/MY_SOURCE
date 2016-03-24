@@ -13,17 +13,16 @@ public class Project {
 
   }
 
-  public Project(String title, Date startDate, Date endDate, String description) {
+  public Project(String title, Date startDate, Date endDate) {
     this.title = title;
     this.startDate = startDate;
     this.endDate = endDate;
-    this.description = description;
   }
 
   @Override
   public String toString() {
-    return this.title + "," + this.startDate + "," +
-    this.endDate + "," + this.state;
+    return this.title + ", " + this.startDate + ", " +
+    this.endDate + ", " + this.state + ", " + this.description;
   }
 
   public String getTitle() {
