@@ -151,7 +151,42 @@
 - 프로젝트 정보 또는 회원 정보를 등록할 때 개수에 제한을 두지 않게 한다.
 - 사용문법:
   => Linked List 도입
-  => java01
+  => java01/src/algorithm/ex01/ 의 LinkedList와 Bucket 클래스를 사용한다.
+- MemberController와 ProjectController에 적용한다.  
+
+#14
+- 제네릭을 적용한 LinkedList를 사용하여 회원 정보 및 프로젝트 정보를 관리하라!
+- 사용문법:
+  => Generic을 적용한 LinkedList
+  => java01/src/algorithm/ex04/ 의 LinkedList와 Bucket 클래스를 사용한다.
+
+#15
+- LinkedList에 예외 적용.
+- 사용문법:
+  => try ~ catch ~
+  => throw ~
+
+#16
+- Bucket 클래스를 LinkedList의 중첩 클래스로 만든다.
+- 왜? Bucket은 LinkedList에서만 사용하기 때문이다.
+
+#17
+- ArrayList 클래스를 적용하라!
+
+#18
+- 사용자 입력한 데이터를 Stream API를 사용하여 저장하고 로딩하라.
+
+#19
+- 메뉴를 처리하기 위해 호출하는 service() 메서드를 규칙으로 정의한다.
+  => 향후 메뉴를 처리하는 모든 클래스는 이 인터페이스의 규칙에 따라 작성해야 한다.
+
+#20
+- 리플랙션(Reflection) API를 사용하여 메뉴 컨트롤러를 객체를 자동 생성하라!
+  => 인스턴스 생성을 자동화시킨다.
+
+
+
+
 
 
 

@@ -1,78 +1,25 @@
-/* 멤버 관리 명령 처리 추가
-1) service() 메서드 추가
-  => "회원관리에 오신 걸 환영합니다." 메시디 출력
-
-2) service()에서 회원 관리 명령 처리
-"회원관리>" 프롬프트를 출력하고,
-사용자로부터 add, list, update, delete 명령어를 입력받아 출력한다.
-만약 "main" 명령이 들어오면 메소드 실행을 종료한다.
----------------------------
-회원관리> add
-(예전과 같이 처리)
-회원관리> list
-(예전과 같이 처리)
-회원관리> update
-(예전과 같이 처리)
-회원관리> delete
-(예전과 같이 처리)
-회원관리> main
-(service() 실행 종료)
----------------------------
-
-*/
 package bitcamp.pms.controller;
 
+import java.util.List;
 import java.util.Scanner;
+
+import bitcamp.pms.annotation.Controller;
+import bitcamp.pms.annotation.RequestMapping;
+import bitcamp.pms.dao.MemberDao;
 import bitcamp.pms.domain.Member;
-import java.util.ArrayList;
+import bitcamp.pms.util.CommandUtil;
 
+@Controller
+@RequestMapping("member/")
 public class MemberController {
-  private Scanner keyScan;
-  private ArrayList<Member> members;
+  private MemberDao memberDao;
 
-  public MemberController() {
-
+  public void setMemberDao(MemberDao memberDao) {
+    this.memberDao = memberDao;
   }
 
-  public void setScanner(Scanner keyScan) {
-    this.keyScan = keyScan;
-  }
-
-  public void setArrayList(ArrayList<Member> members) {
-    this.members = members;
-  }
-
-  public ArrayList<Member> getArrayList() {
-    return members;
-  }
-
-  public void service() {
-    String input = null;
-    do {
-      input = prompt();
-      try {
-        switch (input) {
-          case "add": doAdd(); break;
-          case "list": doList(); break;
-          case "update": doUpdate(); break;
-          case "delete": doDelete(); break;
-          case "main": break;
-          default:
-            System.out.println("지원하지 않는 명령어입니다.");
-        }
-      } catch (IndexOutOfBoundsException e) {
-        System.out.println("유효하지 않은 인덱스입니다.");
-      }
-    } while (!input.equals("main"));
-  }
-
-  private String prompt() {
-    System.out.print("회원관리> ");
-    return keyScan.nextLine().toLowerCase();
-  }
-
-  private void doAdd() {
-
+  @RequestMapping("add.do")
+  public void add(Scanner keyScan) {
     Member member = new Member();
 
     System.out.print("이름? ");
@@ -87,76 +34,88 @@ public class MemberController {
     System.out.print("전화? ");
     member.setTel(keyScan.nextLine());
 
-    if (confirm("저장하시겠습니까?", true)) {
-      members.add(member);
-      System.out.println("저장하였습니다.");
+    if (CommandUtil.confirm("저장하시겠습니까?", keyScan)) {
+      try {
+        memberDao.insert(member);
+        System.out.println("저장했습니다.");
+      } catch (Exception e) {
+        System.out.println("데이터를 저장하는데 실패했습니다.");
+      }
     } else {
       System.out.println("저장을 취소하였습니다.");
     }
   }
 
-  private void doUpdate() {
+  @RequestMapping("delete.do")
+  public void delete(Scanner keyScan) {
+    try {
+      System.out.print("삭제할 회원 번호는? ");
+      int no = Integer.parseInt(keyScan.nextLine());
+
+      if (CommandUtil.confirm("정말 삭제하시겠습니까?", keyScan)) {
+        if (memberDao.delete(no) > 0) {
+          System.out.println("삭제하였습니다.");
+        } else {
+          System.out.println("유효하지 않은 번호이거나, 이미 삭제된 항목입니다.");
+        }
+      } else {
+        System.out.println("삭제를 취소하였습니다.");
+      }
+    } catch (Exception e) {
+      System.out.println("데이터 처리에 실패했습니다.");
+    }
+  }
+
+  @RequestMapping("list.do")
+  public void list() {
+    try {
+      List<Member> members = memberDao.selectList();
+
+      for (Member member : members) {
+        System.out.println(member);
+      }
+    } catch (Exception e) {
+      
+      throw new RuntimeException("회원 데이터 로딩 실패!", e);
+    }
+  }
+
+  @RequestMapping("update.do")
+  public void update(Scanner keyScan) {
     System.out.print("변경할 회원 번호는? ");
     int no = Integer.parseInt(keyScan.nextLine());
 
-    Member oldMember = members.get(no);
-    Member member = new Member();
-
-    System.out.printf("이름(%s)? ", oldMember.getName());
-    member.setName(keyScan.nextLine());
-
-    System.out.printf("이메일(%s)? ", oldMember.getEmail());
-    member.setEmail(keyScan.nextLine());
-
-    System.out.printf("암호(%s)? ", oldMember.getPassword());
-    member.setPassword(keyScan.nextLine());
-
-    System.out.printf("전화(%s)? ", oldMember.getTel());
-    member.setTel(keyScan.nextLine());
-
-    if (confirm("변경하시겠습니까?", true)) {
-      members.set(no, member);
-      System.out.println("변경하였습니다.");
-    } else {
-      System.out.println("변경을 취소하였습니다.");
-    }
-  }
-
-  private void doList() {
-    int i = 0;
-    for (Member member : members) {
-      System.out.println(i++ + ", " +member);
-    }
-  }
-
-  private void doDelete() {
-    System.out.print("삭제할 회원 번호는? ");
-    int no = Integer.parseInt(keyScan.nextLine());
-
-    if (confirm("정말 삭제하시겠습니까?", true)) {
-      members.remove(no);
-      System.out.println("삭제하였습니다.");
-    } else {
-      System.out.println("삭제를 취소하였습니다.");
-    }
-  }
-
-  private boolean confirm(String message, boolean strictMode) {
-    String input = null;
-    do {
-      System.out.printf("%s(y/n) ", message);
-      input = keyScan.nextLine().toLowerCase();
-
-      if (input.equals("y")) {
-        return true;
-      } else if (input.equals("n")) {
-        return false;
-      } else {
-        if (!strictMode) {
-          return false;
-        }
-        System.out.println("잘못된 명령어입니다.");
+    try {
+      Member member = memberDao.selectOne(no);
+      
+      if (member == null) {
+        System.out.println("유효하지 않은 번호입니다.");
+        return;
       }
-    } while(true);
+
+      System.out.printf("이름(%s)? ", member.getName());
+      member.setName(keyScan.nextLine());
+
+      System.out.printf("이메일(%s)? ", member.getEmail());
+      member.setEmail(keyScan.nextLine());
+
+      System.out.printf("암호(%s)? ", member.getPassword());
+      member.setPassword(keyScan.nextLine());
+
+      System.out.printf("전화(%s)? ", member.getTel());
+      member.setTel(keyScan.nextLine());
+
+      if (CommandUtil.confirm("변경하시겠습니까?", keyScan)) {
+        if (memberDao.update(member) > 0) {
+          System.out.println("변경하였습니다.");
+        } else {
+          System.out.println("유효하지 않은 번호이거나, 이미 삭제된 항목입니다.");
+        }
+      } else {
+        System.out.println("변경을 취소하였습니다.");
+      }
+    } catch (Exception e) {
+      System.out.println("데이터 처리에 실패했습니다.");
+    }
   }
 }

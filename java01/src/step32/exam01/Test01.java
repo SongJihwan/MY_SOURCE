@@ -1,0 +1,12 @@
+package step32.exam01;
+
+public class Test01 {
+
+  public static void main(String[] args) throws Exception {
+    CarFactory factory = CarFactory.newInstance();
+    System.out.println(factory.getClass().getName());
+    Car c1 = factory.newCar("tico");
+    Car c2 = factory.newCar("sonata");
+  }
+
+}

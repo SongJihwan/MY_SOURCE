@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE books [
+  <!ENTITY pre "출판사">
+  <!ENTITY % cattr "CDATA #REQUIRED">
+  <!ELEMENT books (press+,book*)>
+  <!ELEMENT book EMPTY>
+  <!ATTLIST book
+    title %cattr
+    content CDATA #IMPLIED 
+    location (local|foreign) "local"
+    type CDATA #FIXED "paper"
+    press IDREF #REQUIRED
+    price %cattr
+    author NMTOKENS #IMPLIED
+  >
+  <!ELEMENT press (name,tel?,web?)>
+  <!ATTLIST press
+    id ID #REQUIRED
+  >
+  <!ELEMENT name (#PCDATA)>
+  <!ELEMENT tel (#PCDATA)>
+  <!ELEMENT web (#PCDATA)>
+]>
+<books>
+  <press id="p001">
+    <name>비트&pre;</name>
+  </press>
+  
+  <book title="자바프로그래밍" content="자바 기초 문법에 대한 책이다" type="paper" press="p001" price="32000"/>
+  <book title="자바프로그래밍2" location="foreign" press="p001" price="42000" author="홍길동 임꺽정 이순신"/>
+</books>

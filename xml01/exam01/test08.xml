@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<code>
+  <title>조건문</title>
+  <content>
+  <![CDATA[
+    int a = 10;
+    if (a < 19) {
+      System.out.println("청소년");
+    } else if (a >= 19 && a < 61) {
+      System.out.println("성인");
+    }
+  ]]>
+  </content>
+</code>

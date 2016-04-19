@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>타이머</title>
+<style>
+div {
+	border-style: solid;
+	border-width: 1px;
+	border-color: red;
+	width: 150px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 10px;
+	text-align: center;
+}
+</style>
+</head>
+<body>
+	<div>
+		<span id="sec">5</span>초<br>
+		<button id='btn'>시작</button>
+	</div>
+	<img id="photo">
+	<audio id="audio" src="http://www.soundjay.com/button/beep-07.wav"></audio>
+
+	<script>
+		var btn = document.getElementById('btn');
+		var sec = document.getElementById('sec');
+		btn.onclick = function() {
+			var timer = setInterval(function() {
+				if (sec.innerHTML == 0) {
+					clearInterval(timer);
+					var photo = document.getElementById('photo').src = 'aaa.jpg';
+					var sound = document.getElementById('audio').play();
+					return;
+				}
+				sec.innerHTML--;
+			}, 1000);
+		};
+
+	</script>
+</body>
+</html>
